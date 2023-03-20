@@ -1,0 +1,15 @@
+body{
+    margin: 0 auto;
+}
+
+.wrapper{
+    display: flex;
+}
+
+
+.category-container{
+    background-color: aquamarine;
+    width: 300px;
+    height: 200px;
+    border: 3pt solid black;
+}
