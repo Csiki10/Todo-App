@@ -1,16 +1,32 @@
-let todoList = [
-  { category: 'toBuy', priority: 2, content: 'Milk', icon: '🥛' },
-  { category: 'work', priority: 1, content: 'Finish project', icon: '💻' },
-  { category: 'school', priority: 3, content: 'Study for exam', icon: '📚' },
-  { category: 'toBuy', priority: 4, content: 'Eggs', icon: '🥚' },
-  { category: 'work', priority: 2, content: 'Schedule meeting', icon: '📅' }
-];
+class ToDo {
+  constructor(category, priority, content, icon) {
+    this.category = category;
+    this.priority = priority;
+    this.content = content;
+    this.icon = icon;
+  }
+}
 
-const container = document.querySelector('#todo-container');
+let todoList = [];
 
-todoList.forEach(item => {
+todoList.push(
+  new ToDo('toBuy', '2', 'Water', '🥛') ,
+  new ToDo('work', '1', 'Finish project', '💻'),
+  new ToDo('school', '3', 'Study for exam', '📚'),
+  new ToDo('toBuy', '4', 'Eggs', '🥚'),
+  new ToDo('work', '2', 'Schedule meeting', '📅')
+)
+
+todoList.forEach(item => { 
+
+  decideCategory(item);
+
+});
+
+function decideCategory(item){
   const todoItem = document.createElement('p');
   const icon = document.createElement('span');
+
   icon.textContent = item.icon;
   todoItem.textContent = item.content;
   todoItem.insertBefore(icon, todoItem.firstChild);
@@ -18,18 +34,55 @@ todoList.forEach(item => {
   const toBuyContainer = document.querySelector('#to-buy-container');
   const workContainer = document.querySelector('#work-container');
   const schoolContainer = document.querySelector('#school-container');
+
+  todoItem.onclick = function() { todoItem.style.textDecoration = "line-through" };
+
+  switch (item.category) {
+    case 'toBuy':
+    toBuyContainer.appendChild(todoItem);
+    break;
+    case 'work':
+    workContainer.appendChild(todoItem);
+    break;
+    case 'school':
+    schoolContainer.appendChild(todoItem);
+    break;
+  }
+
+  switch (item.priority) {
+    case "1":
+      todoItem.classList.add("prio1");
+    break;
+    case "2":
+      todoItem.classList.add("prio2");    
+    break;
+    case "3":
+      todoItem.classList.add("prio3");  
+    break;
+    case "4":
+      todoItem.classList.add("prio4");
+    break;
+  } 
+}
+
+
+function addNewItem(){
+  let category = document.querySelector('#category');
+  let priority = document.querySelector('#priority');
+  let content = document.querySelector('#content');
+  let icon = document.querySelector('#icon');
+
+  if(content.value == "" || content.value.length  < "4" || category.value == "" ){
+    alert("rossz bemeneti paraméterek!");
+  }
+  else{
+    let item = new ToDo(category.value,priority.value,content.value,icon.value);
+
+    todoList.push(item);
   
-    switch (item.category) {
-        case 'toBuy':
-        toBuyContainer.appendChild(todoItem);
-        break;
-        case 'work':
-        workContainer.appendChild(todoItem);
-        break;
-        case 'school':
-        schoolContainer.appendChild(todoItem);
-        break;
-        default:
-        console.log(`Unknown category: ${item.category}`);
-    }
-});
+    decideCategory(item);
+  }
+
+
+
+}
